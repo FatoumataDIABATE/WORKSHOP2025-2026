@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résilink - À propos{% endblock %}
+
+{% block styles %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/about.css') }}">
+{% endblock %}
+
+{% block body %}
+<main class="about">
+
+  <section class="hero">
+    <div class="container">
+      <h1>Une messagerie sécurisée pour reconnecter les proches</h1>
+      <p class="lead">
+        Notre plateforme offre un espace sûr et privé pour maintenir le lien avec vos proches, où que vous soyez.
+      </p>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <div class="grid">
+        <article class="card">
+          <h3 class="card-title">
+            <span class="icon icon-shield" aria-hidden="true"></span>
+            Sécurité avant tout
+          </h3>
+          <p>
+            Tous vos messages sont protégés par un chiffrement de bout en bout. Vos conversations restent privées et sécurisées,
+            accessibles uniquement par vous et vos correspondants.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">
+            <span class="icon icon-users" aria-hidden="true"></span>
+            Reconnexion simplifiée
+          </h3>
+          <p>
+            Interface intuitive et épurée pour se concentrer sur l’essentiel&nbsp;: vos échanges avec vos proches.
+            Ajoutez facilement des contacts et commencez à discuter en quelques clics.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">
+            <span class="icon icon-lock" aria-hidden="true"></span>
+            Confidentialité garantie
+          </h3>
+          <p>
+            Aucune donnée personnelle n’est collectée ou partagée. Vos informations restent sous votre contrôle total,
+            en respectant votre vie privée et celle de vos proches.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">
+            <span class="icon icon-chat" aria-hidden="true"></span>
+            Communication moderne
+          </h3>
+          <p>
+            Partagez du texte, des images et des fichiers en toute sécurité. Interface responsive adaptée à tous vos appareils
+            pour rester connecté où que vous soyez.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="container">
+      <article class="card card--wide">
+        <h2 class="mission">Notre mission</h2>
+        <p>
+          Dans un monde de plus en plus connecté mais parfois impersonnel, nous croyons que la technologie doit servir à rapprocher
+          les gens, pas à les éloigner. Notre plateforme de messagerie sécurisée a été conçue pour offrir un espace de communication
+          authentique, privé et sûr, permettant aux familles et aux amis de maintenir des liens forts, peu importe la distance
+          qui les sépare.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="about-footer">
+    <div class="container">
+      <hr class="separator" />
+      <p class="small muted">© 2025 Messagerie Sécurisée. Conçu avec soin pour protéger vos conversations.</p>
+    </div>
+  </section>
+</main>
+
+{% endblock %}
