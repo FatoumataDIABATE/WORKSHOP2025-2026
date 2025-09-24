@@ -193,6 +193,7 @@ body::before {
 }
 
 .nav-right {
+    margin-right: 16px;
     margin-left: auto;
     display: flex;
     align-items: center;
@@ -231,6 +232,48 @@ body::before {
 
 .btn:active {
     transform: translateY(1px);
+}
+
+.ico-user   { --ico-mask: url("/img/user.svg"); }
+.ico-logout { --ico-mask: url("/img/logout.svg"); }
+
+.ico::before{
+    content:"";
+    width: 18px;
+    height: 18px;
+    background-color: currentColor;
+    -webkit-mask: var(--ico-mask) no-repeat center / contain;
+            mask: var(--ico-mask) no-repeat center / contain;
+  }
+
+  .nav-right a.ico:hover{
+    background: rgba(255,255,255,0.07);
+    color: var(--btn-bg-active);
+  }
+
+  .nav-right a.ico:focus-visible{
+    outline: 2px solid var(--btn-ring);
+    outline-offset: 2px;
+  }
+  .nav-right a.ico{
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+.ico {
+    --d: 30px;
+    width: var(--d);
+    height: var(--d);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    color: var(--button);
+    -webkit-mask: none;
+    mask: none;
 }
 
 @media (max-width: 720px) {
