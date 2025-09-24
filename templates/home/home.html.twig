@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block title %}Résilink
+{% endblock %}
+
+{% block styles %}
+  
+  <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+
+{% block body %}
+<section class="section hero">
+  <div class="outer">
+    <div class="inner">
+      <h1>
+        vos proches<br>
+        en toute <em class="accent">sécurité</em>
+      </h1>
+
+      <p class="hero__lead">
+        Une plateforme de messagerie sécurisée pour reconnecter les proches.
+        Chiffrement de bout en bout, interface intuitive, confidentialité garantie.
+        Parce que vos conversations privées doivent le rester.
+      </p>
+
+      <div class="hero__cta">
+        <a href="{{ path('app_construction')}}" class="btn btn--lg">          
+          Accéder à la messagerie
+          <span class="ico ico-message" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section features">
+  <div class="outer">
+    <ul class="features__grid">
+      <li class="feature">
+        <span class="ico ico-lock" aria-hidden="true"></span>
+        <h4>Chiffrement E2E</h4>
+        <p>Vos messages sont protégés par un chiffrement de bout en bout.</p>
+      </li>
+
+      <li class="feature">
+        <span class="ico ico-users" aria-hidden="true"></span>
+        <h4>Reconnexion</h4>
+        <p>Retrouvez et reconnectez-vous avec vos proches facilement.</p>
+      </li>
+
+      <li class="feature">
+        <span class="ico ico-shield" aria-hidden="true"></span>
+        <h4>Confidentialité</h4>
+        <p>Vos données personnelles restent privées et sécurisées.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+{% endblock %}

@@ -1,17 +1,48 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>
+			{% block title %}Résilink
+			{% endblock %}
+		</title>
+		
+		<link rel="stylesheet" href="{{ asset('css/base.css') }}">
+		<link rel="preload" as="font" href="{{ asset('fonts/JetBrainsMono-Regular.woff2') }}" type="font/woff2" crossorigin>
+		<link rel="preload" as="font" href="{{ asset('fonts/Spectral-ExtraBold.woff2') }}" type="font/woff2" crossorigin>
+		<link rel="icon" href="{{ asset('img/favicon.ico') }}"> {% block styles %}{% endblock %}
+		</head>
+		<body>
+			<header class="navbar">
+				<div class="container">
+					<a class="brand" href="{{ path('app_home') }}"><img src="{{ asset('img/navbar_logo.png') }}" alt="Résilink"/></a>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+					<nav class="menu-center">
+						<div class="menu">
+							<a href="" class="{% if app.request.attributes.get('_route') == 'app_home' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_home' %}page{% endif %}">
+								Accueil
+							</a>
+							<a href="" class="{% if app.request.attributes.get('_route') == 'app_messages' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_messages' %}page{% endif %}">
+								Messagerie
+							</a>
+							<a href="" class="{% if app.request.attributes.get('_route') == 'app_about' %}is-active{% endif %}">
+								À propos
+							</a>
+							<a href="" class="{% if app.request.attributes.get('_route') == 'app_stocks' %}is-active{% endif %}">
+								Stocks
+							</a>
+						</div>
+					</nav>
+
+					<div
+						class="nav-right">
+					</div>
+				</div>
+			</header>
+
+			<main id="content"> {% block body %}{% endblock %}
+				</main>
+				{% block javascripts %}{% endblock %}
+			</body>
+		</html>

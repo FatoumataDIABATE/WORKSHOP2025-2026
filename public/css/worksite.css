@@ -1,0 +1,75 @@
+:root{
+    --uc-gutter: clamp(16px, 5vw, 28px);         
+    --uc-card-py: clamp(26px, 5vw, 36px);        
+    --uc-card-px: clamp(16px, 4vw, 24px);
+  }
+
+  .uc{
+    min-block-size: calc(100vh - var(--nav-height) - 10vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--uc-gutter);
+ }
+
+.uc-card{
+    width: min(500px, 100%);              
+    padding: var(--uc-card-py) var(--uc-card-px);
+    min-height: 360px;  
+    background: rgba(255,255,255,.05);
+    border: 1px solid var(--button);
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(0,0,0,.35);
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+.uc-icon .ico {
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    background-color: var(--button);
+    -webkit-mask: var(--ico-mask) no-repeat center / contain;
+    mask: var(--ico-mask) no-repeat center / contain;
+}
+
+.uc-icon {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 20px 0;
+}
+
+.uc-card h1 {
+    margin: 6px 0 12px;
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: var(--button);
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+}
+
+.uc-lead {
+    margin: 20px auto 20px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 0.95rem;
+    max-width: 85%;
+}
+.uc-sub {
+    margin: 0 auto 16px;
+    color: var(--text-secondary);
+    opacity: 0.9;
+    font-size: 0.9rem;
+    max-width: 85%;
+}
+
+.btn--block {
+    margin: 16px 0;
+    width: 70%;
+}
+
+.ico-work {
+    --ico-mask: url("/img/work.svg");
+    background-color: #fff;
+    height: 30px;
+    width: auto;
+}
