@@ -20,16 +20,16 @@
 
 					<nav class="menu-center">
 						<div class="menu">
-							<a href="{{ path('app_home') }}" class="{% if app.request.attributes.get('_route') == 'app_home' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_home' %}page{% endif %}">
+							<a href="" class="{% if app.request.attributes.get('_route') == 'app_home' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_home' %}page{% endif %}">
 								Accueil
 							</a>
-							<a href="{{ path('app_messagerie') }}" class="{% if app.request.attributes.get('_route') == 'app_messagerie' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_messagerie' %}page{% endif %}">
+							<a href="" class="{% if app.request.attributes.get('_route') == 'app_messages' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_messages' %}page{% endif %}">
 								Messagerie
 							</a>
-							<a href="{{ path('app_about') }}" class="{% if app.request.attributes.get('_route') == 'app_about' %}is-active{% endif %}">
+							<a href="" class="{% if app.request.attributes.get('_route') == 'app_about' %}is-active{% endif %}">
 								À propos
 							</a>
-							<a href="{{ path('app_stocks') }}" class="{% if app.request.attributes.get('_route') == 'app_stocks' %}is-active{% endif %}">
+							<a href="" class="{% if app.request.attributes.get('_route') == 'app_stocks' %}is-active{% endif %}">
 								Stocks
 							</a>
 						</div>
@@ -37,7 +37,7 @@
 
 					<class="nav-right">
 						<div class="nav-right">
-							<a href="{{ path('app_profil') }}" class="ico ico-user" aria-label="Profil" title="Profil"></a>
+							<a href="" class="ico ico-user" aria-label="Profil" title="Profil"></a>
 							<a href="{{ path('app_logout') }}" class="ico ico-logout" aria-label="Se déconnecter" title="Se déconnecter"></a>
 						</div>
 
