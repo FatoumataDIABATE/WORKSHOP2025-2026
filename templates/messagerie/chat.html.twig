@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discussion{% endblock %}
+
+{% block body %}
+    <h1>Discussion avec {{ chatUser.pseudo }}</h1>
+
+    <div class="messages" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; max-height: 400px; overflow-y: auto;">
+        {% for message in messages %}
+            <p><strong>{{ message.sender.pseudo }} :</strong> {{ message.content }}</p>
+        {% else %}
+            <p>Aucun message pour l’instant.</p>
+        {% endfor %}
+    </div>
+
+    <h2>Envoyer un message</h2>
+    {{ form_start(form) }}
+    {{ form_row(form.content) }}
+    <button type="submit">Envoyer</button>
+    {{ form_end(form) }}
+
+{% endblock %}

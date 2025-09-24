@@ -32,33 +32,23 @@
 							<a href="{{ path ('app_stocks') }}" class="{% if app.request.attributes.get('_route') == 'app_stocks' %}is-active{% endif %}">
 								Stocks
 							</a>
-                            {% if app.user %}
-                                <a href="" class="{% if app.request.attributes.get('_route') == 'app_profile' %}is-active{% endif %}">
-                                    Profil
-                                </a>
-                                <a href="{{ path('app_logout') }}">
-                                    Déconnexion
-                                </a>
-                            {% else %}
-                                <a href="{{ path('app_login') }}">
-                                    Connexion
-                                </a>
-                            {% endif %}
+
 						</div>
 					</nav>
 
-					<class="nav-right">
+					<div class ="nav-right">
 						<div class="nav-right">
 							<a href="" class="ico ico-user" aria-label="Profil" title="Profil"></a>
 							<a href="{{ path('app_logout') }}" class="ico ico-logout" aria-label="Se déconnecter" title="Se déconnecter"></a>
 						</div>
 
 					</div>
+                </div>
 				</header>
 
 				<main id="content"> {% block body %}{% endblock %}
 					</main>
 					{% block javascripts %}{% endblock %}
-				</body>
-			</body>
-		</html>
+
+        </body>
+</html>

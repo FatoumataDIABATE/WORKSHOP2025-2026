@@ -14,46 +14,73 @@
 <main class="page">
     <header class="site-head">
         <img src="{{ asset('img/logo_header.png') }}" alt="Résilink">
-        <h1 class="brand">RÉSI<span>LINK</span>
-        </h1>
+        <h1 class="brand">RÉSI<span>LINK</span></h1>
         <p class="tagline">Un espace sûr, anonyme et collectif pour votre ville.</p>
     </header>
 
     <section class="card" aria-labelledby="auth-title">
-        <nav class="tabs" role="tablist" aria-label="Choisir une action">
-            <button class="tab is-active" role="tab" id="tab-login" aria-selected="true" data-title="Se connecter" data-note="Vous n’avez pas encore de compte ? Scannez un QR code officiel pour vous inscrire." data-panel="panel-login" type="button">Se connecter</button>
 
-            <button class="tab" role="tab" id="tab-signup" aria-selected="false" data-title="Créer votre identité sécurisée" data-note="Conservez bien vos identifiants. Pour garantir votre anonymat, nous ne pouvons pas réinitialiser vos accès." data-panel="panel-signup" type="button">S’inscrire</button>
+        {# Onglets #}
+        <nav class="tabs" role="tablist" aria-label="Choisir une action">
+            <button class="tab {{ activeTab is not defined or activeTab == 'login' ? 'is-active' : '' }}"
+                    role="tab" id="tab-login"
+                    aria-selected="{{ activeTab is not defined or activeTab == 'login' ? 'true' : 'false' }}"
+                    data-title="Se connecter"
+                    data-note="Vous n’avez pas encore de compte ? Scannez un QR code officiel pour vous inscrire."
+                    data-panel="panel-login" type="button">
+                Se connecter
+            </button>
+
+            <button class="tab {{ activeTab is defined and activeTab == 'signup' ? 'is-active' : '' }}"
+                    role="tab" id="tab-signup"
+                    aria-selected="{{ activeTab is not defined or activeTab == 'signup' ? 'true' : 'false' }}"
+                    data-title="Créer votre identité sécurisée"
+                    data-note="Conservez bien vos identifiants. Pour garantir votre anonymat, nous ne pouvons pas réinitialiser vos accès."
+                    data-panel="panel-signup" type="button">
+                S’inscrire
+            </button>
         </nav>
 
+        <h2 id="auth-title" class="h2">
+            {{ activeTab is defined and activeTab == 'signup' ? 'Créer votre identité sécurisée' : 'Se connecter' }}
+        </h2>
 
-        <h2 id="auth-title" class="h2">Se connecter</h2>
+        {# --- Formulaire Connexion --- #}
+        <section id="panel-login" role="tabpanel" aria-labelledby="tab-login" {{ activeTab is defined and activeTab == 'signup' ? 'hidden' : '' }}>
+            {# Affichage erreur de connexion #}
+            {% if error is defined %}
+                <div class="alert alert-danger">
+                    Identifiant ou mot de passe incorrect.
+                </div>
+            {% endif %}
 
-
-
-        <section id="panel-login" role="tabpanel" aria-labelledby="tab-login">
-
-
-            {# Message succès après déconnexion par exemple #}
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success">{{ message }}</div>
             {% endfor %}
+
             <form method="post" action="{{ path('app_login') }}" class="form">
                 <div class="field">
                     <label for="username">Identifiant</label>
-                    <input id="username" name="pseudo" type="text" required autocomplete="username" placeholder="Votre identifiant" value="{{ last_username|default('')|e }}" class="input">
+                    <input id="username" name="pseudo" type="text" required autocomplete="username"
+                           placeholder="Votre identifiant" value="{{ last_username|default('')|e }}" class="input">
                 </div>
 
                 <div class="field">
                     <label for="password">Mot de passe</label>
                     <div class="input-wrap">
-                        <input id="password" name="password" type="password" required autocomplete="current-password" placeholder="Votre mot de passe" class="input input--with-icon">
-                        <button type="button" class="icon-eye" data-toggle="password" data-target="password" aria-label="Afficher le mot de passe" aria-pressed="false">
-                            <svg class="eye" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <input id="password" name="password" type="password" required autocomplete="current-password"
+                               placeholder="Votre mot de passe" class="input input--with-icon">
+                        <button type="button" class="icon-eye" data-toggle="password" data-target="password"
+                                aria-label="Afficher le mot de passe" aria-pressed="false">
+                            <svg class="eye" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                 viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
                                 <circle cx="12" cy="12" r="3"/>
                             </svg>
-                            <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                 viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17.94 17.94A10.06 10.06 0 0 1 12 20c-7 0-11-8-11-8a20.29 20.29 0 0 1 5.08-6.06"/>
                                 <path d="M9.9 4.24A9.77 9.77 0 0 1 12 4c7 0 11 8 11 8a20.29 20.29 0 0 1-4.12 5.06"/>
                                 <line x1="1" y1="1" x2="23" y2="23"/>
@@ -63,34 +90,37 @@
                 </div>
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
                 <button class="btn" type="submit">Connexion sécurisée</button>
             </form>
         </section>
 
-
-        <section id="panel-signup" role="tabpanel" aria-labelledby="tab-signup" hidden>
-            {% if registerError %}
+        {# --- Formulaire Inscription --- #}
+        <section id="panel-signup" role="tabpanel" aria-labelledby="tab-signup" {{ activeTab is not defined or activeTab == 'login' ? 'hidden' : '' }}>
+            {% if registerError is defined %}
                 <div class="alert alert-danger">{{ registerError }}</div>
             {% endif %}
 
-            {% if registerSuccess %}
+            {% if registerSuccess is defined %}
                 <div class="alert alert-success">{{ registerSuccess }}</div>
             {% endif %}
+
             <form method="post" action="{{ path('app_register') }}" class="form" autocomplete="off">
                 <div class="field">
                     <label for="reg-username">Identifiant</label>
-                    <input id="reg-username" name="pseudo" type="text" required autocomplete="off" spellcheck="false" placeholder="Choisissez un identifiant" class="input">
+                    <input id="reg-username" name="pseudo" type="text" required autocomplete="off"
+                           spellcheck="false" placeholder="Choisissez un identifiant" class="input">
                 </div>
 
                 <div class="field">
                     <label for="reg-password">Mot de passe</label>
-                    <input id="reg-password" name="password" type="password" required autocomplete="new-password" placeholder="Créer un mot de passe" class="input input--with-icon">
+                    <input id="reg-password" name="password" type="password" required autocomplete="new-password"
+                           placeholder="Créer un mot de passe" class="input input--with-icon">
                 </div>
 
                 <div class="field">
                     <label for="reg-password2">Confirmer le mot de passe</label>
-                    <input id="reg-password2" name="password_confirm" type="password" required autocomplete="new-password" placeholder="Confirmez le mot de passe" class="input">
+                    <input id="reg-password2" name="password_confirm" type="password" required autocomplete="new-password"
+                           placeholder="Confirmez le mot de passe" class="input">
                 </div>
 
                 {% if csrf_token is defined %}
@@ -100,7 +130,6 @@
                 <button class="btn" type="submit">Créer mon compte</button>
             </form>
         </section>
-
 
         <p class="note">
             Vous n’avez pas encore de compte ? Scannez un QR code officiel pour vous inscrire.

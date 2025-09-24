@@ -26,9 +26,6 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
             'logoutSuccess' => $logoutSuccess,
-            // Les messages d'inscription seront gérés par le RegistrationController
-            'registerError' => null,
-            'registerSuccess' => null,
         ]);
     }
 

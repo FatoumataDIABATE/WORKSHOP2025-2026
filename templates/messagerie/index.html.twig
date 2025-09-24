@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie{% endblock %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+
+    <ul>
+        {% for user in users %}
+            <li>
+                <a href="{{ path('app_messagerie_chat', {'id': user.id}) }}">
+                    {{ user.pseudo }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
