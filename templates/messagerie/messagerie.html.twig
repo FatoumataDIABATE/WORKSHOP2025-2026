@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résilink - Messagerie{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ asset('css/messagerie.css') }}">
+{% endblock %}
+{% block javascripts %}
+  <script src="{{ asset('js/messagerie.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+<main class="messaging">
+  <section class="layout">
+    <aside class="sidebar">
+      <a href="" class="add-contact">    
+     + Ajouter un contact
+  </a>
+
+  <div class="search">
+    <span class="glyph i-search" aria-hidden="true"></span>
+    <input type="text" placeholder="Rechercher un contact…">
+  </div>
+
+      <ul class="contacts">
+        <li class="contact is-active">
+          <span class="avatar">A</span>
+          <div class="meta">
+            <div class="name">Alice <span class="dot online" aria-hidden="true"></span></div>
+            <div class="status">En ligne</div>
+          </div>
+        </li>
+
+        <li class="contact">
+          <span class="avatar">B</span>
+          <div class="meta">
+            <div class="name">Bob <span class="dot idle" aria-hidden="true"></span></div>
+            <div class="status">il y a 2h</div>
+          </div>
+        </li>
+
+        <li class="contact">
+          <span class="avatar">C</span>
+          <div class="meta">
+            <div class="name">Charlie <span class="dot online" aria-hidden="true"></span></div>
+            <div class="status">En ligne</div>
+          </div>
+        </li>
+      </ul>
+    </aside>
+
+    <section class="chat">
+      <div class="empty">
+        <span class="circle i-shield" aria-hidden="true"></span>
+        <h3>Sélectionnez un contact</h3>
+        <p class="muted">Choisissez un contact pour commencer une conversation sécurisée</p>
+      </div>
+
+      <div class="thread">
+        <div class="messages">
+          <div class="message from-them">
+            <div class="bubble">Salut ! Comment ça va ?</div>
+            <div class="time">15:36</div>
+          </div>
+
+          <div class="message from-them">
+            <div class="bubble">Parfait ! Tu es libre ce soir ?</div>
+            <div class="time">16:06</div>
+          </div>
+
+          <div class="message from-me">
+            <div class="bubble">Ça va bien merci ! Et toi ?</div>
+            <div class="time">15:46 <span class="seen">Lu</span></div>
+          </div>
+        </div>
+
+        <div class="composer">
+          <div class="tools">
+            <button class="icon-btn" aria-label="Prendre une photo"><span class="glyph i-camera"></span></button>
+            <button class="icon-btn" aria-label="Insérer une image"><span class="glyph i-image"></span></button>
+            <button class="icon-btn" aria-label="Joindre un fichier"><span class="glyph i-clip"></span></button>
+          </div>
+
+          <input class="input" type="text" placeholder="Tapez votre message…">
+
+          <button class="send" aria-label="Envoyer"><span class="glyph i-send"></span></button>
+        </div>
+      </div>
+    </section>
+  </section>
+</main>
+{% endblock %}

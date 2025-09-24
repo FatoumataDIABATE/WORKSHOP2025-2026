@@ -237,7 +237,7 @@ body::before {
 .ico-user   { --ico-mask: url("/img/user.svg"); }
 .ico-logout { --ico-mask: url("/img/logout.svg"); }
 
-.ico::before{
+.navbar .ico::before{
     content:"";
     width: 18px;
     height: 18px;
@@ -260,7 +260,7 @@ body::before {
     cursor: pointer;
   }
 
-.ico {
+.ico-user, .ico-logout {
     --d: 30px;
     width: var(--d);
     height: var(--d);
