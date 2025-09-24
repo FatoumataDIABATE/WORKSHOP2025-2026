@@ -20,18 +20,30 @@
 
 					<nav class="menu-center">
 						<div class="menu">
-							<a href="" class="{% if app.request.attributes.get('_route') == 'app_home' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_home' %}page{% endif %}">
+							<a href="{{ path ('app_home') }}" class="{% if app.request.attributes.get('_route') == 'app_home' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_home' %}page{% endif %}">
 								Accueil
 							</a>
-							<a href="" class="{% if app.request.attributes.get('_route') == 'app_messages' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_messages' %}page{% endif %}">
+							<a href="{{ path ('app_messagerie') }}" class="{% if app.request.attributes.get('_route') == 'app_messagerie' %}is-active{% endif %}" aria-current="{% if app.request.attributes.get('_route') == 'app_messages' %}page{% endif %}">
 								Messagerie
 							</a>
-							<a href="" class="{% if app.request.attributes.get('_route') == 'app_about' %}is-active{% endif %}">
+							<a href="{{ path ('app_stocks') }}" class="{% if app.request.attributes.get('_route') == 'app_about' %}is-active{% endif %}">
 								À propos
 							</a>
-							<a href="" class="{% if app.request.attributes.get('_route') == 'app_stocks' %}is-active{% endif %}">
+							<a href="{{ path ('app_stocks') }}" class="{% if app.request.attributes.get('_route') == 'app_stocks' %}is-active{% endif %}">
 								Stocks
 							</a>
+                            {% if app.user %}
+                                <a href="" class="{% if app.request.attributes.get('_route') == 'app_profile' %}is-active{% endif %}">
+                                    Profil
+                                </a>
+                                <a href="{{ path('app_logout') }}">
+                                    Déconnexion
+                                </a>
+                            {% else %}
+                                <a href="{{ path('app_login') }}">
+                                    Connexion
+                                </a>
+                            {% endif %}
 						</div>
 					</nav>
 
