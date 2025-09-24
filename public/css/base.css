@@ -1,0 +1,248 @@
+@font-face {
+    font-family: "Spectral";
+    src: url("/fonts/Spectral-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Spectral";
+    src: url("/fonts/Spectral-ExtraBold.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("/fonts/JetBrainsMono-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --text-primary: #e7f0ee;
+    --text-secondary: #b8d6d1;
+    --button: #8ffbe9;
+    --button-2: #9ce0d8;
+    --font-title: "Spectral", ui-serif, Georgia, "Times New Roman", serif;
+    --font-text: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
+    --nav-height: 64px;
+    --nav-bg: rgba(10, 20, 24, 0.6);
+    --nav-border: rgba(255, 255, 255, 0.06);
+    --nav-blur: 10px;
+    --menu-track-bg: rgba(255, 255, 255, 0.06);
+    --menu-track-border: rgba(255, 255, 255, 0.08);
+    --btn-radius: 9999px;
+    --btn-text: #0c1a20;
+    --btn-bg: var(--button);
+    --btn-bg-active: #6ef0dc;
+    --btn-border: rgba(0, 0, 0, 0.45);
+    --btn-shadow: 0 10px 24px rgba(143, 251, 233, 0.15);
+    --btn-shadow-hover: 0 10px 24px rgba(143, 251, 233, 0.22);
+    --btn-ring: rgba(143, 251, 233, 0.45);
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background-color: #131617;
+    font-family: var(--font-text);
+    color: var(--text-primary);
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-title);
+    color: var(--button);
+    font-weight: 700;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    left: 50%;
+    top: -120px;
+    transform: translateX(-50%);
+    width: 1200px;
+    height: 600px;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+        1200px 600px at 50% 0%,
+        rgba(110, 253, 217, 0.12) 0%,
+        rgba(110, 253, 217, 0.08) 30%,
+        transparent 60%
+    );
+}
+
+#content {
+    position: relative;
+    z-index: 1;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(var(--nav-blur));
+    -webkit-backdrop-filter: blur(var(--nav-blur));
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--nav-border);
+}
+
+.navbar .container {
+    max-width: none;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    margin-right: auto;
+    width: 135px;
+    height: auto;
+}
+
+.brand img {
+    display: block;
+    width: 135px;
+    height: auto;
+}
+
+.menu-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.menu,
+.menu a {
+    white-space: nowrap;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px;
+    border-radius: 9999px;
+    background: var(--menu-track-bg);
+    border: 1px solid var(--menu-track-border);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.menu a {
+    font-family: var(--font-text);
+    color: #8ffbe9ab;
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1;
+    padding: 10px 14px;
+    border-radius: var(--btn-radius);
+    transition: color 0.2s ease;
+}
+.menu a:hover {
+    color: var(--btn-bg-active);
+}
+
+.menu a.is-active,
+.menu a[aria-current="page"] {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--btn-border);
+    box-shadow: var(--btn-shadow);
+}
+
+.menu a.is-active:focus-visible,
+.menu a[aria-current="page"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--btn-ring), var(--btn-shadow);
+}
+
+.nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    border-radius: var(--btn-radius);
+    border: 1px solid var(--btn-border);
+    background: linear-gradient(90deg, var(--button), var(--button-2));
+    color: #053a34;
+    font-family: var(--font-text);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: var(--btn-shadow);
+    transition: transform 0.06s ease, filter 0.15s ease;
+    white-space: nowrap;
+}
+.btn:hover {
+    filter: brightness(1.06);
+}
+.btn:active {
+    transform: translateY(1px);
+}
+.btn--block {
+    width: 100%;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 720px) {
+    .navbar .container {
+        justify-content: center;
+    }
+    .brand,
+    .nav-right {
+        display: none;
+    }
+    .menu-center {
+        position: static;
+        transform: none;
+    }
+}

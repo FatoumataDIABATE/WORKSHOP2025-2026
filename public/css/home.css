@@ -1,0 +1,145 @@
+:root{
+    --space-cta: 32px;      
+    --space-hero-pad: 80px;
+    --space-hero-bot: 45px;
+  }
+
+.section {
+    padding: 20px 0 36px;
+}
+
+.section.hero {
+    padding-top: var(--space-hero-pad);
+    padding-bottom: var(--space-hero-bot);
+}
+
+.outer {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+.inner {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero h1 {    
+    font-family: var(--font-title);
+    margin-bottom: 8px;
+    font-size: clamp(2rem, 8.5vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: 0.2px;
+    font-size: clamp(2.6rem, 6.5vw, 5rem);
+    color: var(--button);
+}
+.hero .accent {
+    font-style: italic;
+}
+
+.hero__lead {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    margin: 0 auto var(--space-cta);
+}
+
+.hero__cta {
+    margin-block: var(--space-cta);
+}
+
+.btn .ico {
+    width: 1.1em;
+    height: 1.1em;
+    margin-left: 8px;
+    display: inline-block;
+    background-color: currentColor;
+    -webkit-mask: var(--ico-mask) no-repeat center / contain;
+    mask: var(--ico-mask) no-repeat center / contain;
+}
+
+.btn .ico-message{
+    width: .9em;
+    height: .9em;
+  }
+
+.features {
+    padding-top: var(--space-cta);
+}
+.features__grid {
+    list-style: none;
+    padding: 0;
+    margin: 36px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+    max-width: 980px;
+}
+.feature {
+    text-align: center;
+}
+
+.feature .ico {
+    --d: 56px;
+    width: var(--d);
+    height: var(--d);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    color: var(--button);
+    -webkit-mask: none;
+    mask: none;
+}
+.feature .ico::after {
+    content: "";
+    width: 28px;
+    height: 28px;
+    background-color: currentColor;
+    -webkit-mask: var(--ico-mask) no-repeat center / contain;
+    mask: var(--ico-mask) no-repeat center / contain;
+}
+
+.feature h4 {
+    margin: 4px 0 8px;
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: var(--button);
+    font-size: 1.2rem;
+}
+.feature p {
+    color: var(--text-secondary);
+    font-size: 0.84rem;
+    line-height: 1.6;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+.ico-message {
+    --ico-mask: url("/img/message.svg");
+    transform: rotateY(3.142rad);
+    height: 0.9em;
+    width: 0.9em;
+}
+.ico-lock {
+    --ico-mask: url("/img/lock.svg");
+}
+.ico-users {
+    --ico-mask: url("/img/users.svg");
+}
+.ico-shield {
+    --ico-mask: url("/img/shield.svg");
+}
+
+@media (max-width: 900px) {
+    .features__grid {
+        grid-template-columns: 1fr;
+        max-width: 560px;
+    }
+    .section {
+        padding: 40px 0 56px;
+    }
+}
