@@ -7,7 +7,7 @@
 			{% block title %}Résilink
 			{% endblock %}
 		</title>
-		
+
 		<link rel="stylesheet" href="{{ asset('css/base.css') }}">
 		<link rel="preload" as="font" href="{{ asset('fonts/JetBrainsMono-Regular.woff2') }}" type="font/woff2" crossorigin>
 		<link rel="preload" as="font" href="{{ asset('fonts/Spectral-ExtraBold.woff2') }}" type="font/woff2" crossorigin>
@@ -35,14 +35,18 @@
 						</div>
 					</nav>
 
-					<div
-						class="nav-right">
-					</div>
-				</div>
-			</header>
+					<class="nav-right">
+						<div class="nav-right">
+							<a href="" class="ico ico-user" aria-label="Profil" title="Profil"></a>
+							<a href="{{ path('app_logout') }}" class="ico ico-logout" aria-label="Se déconnecter" title="Se déconnecter"></a>
+						</div>
 
-			<main id="content"> {% block body %}{% endblock %}
-				</main>
-				{% block javascripts %}{% endblock %}
+					</div>
+				</header>
+
+				<main id="content"> {% block body %}{% endblock %}
+					</main>
+					{% block javascripts %}{% endblock %}
+				</body>
 			</body>
 		</html>
