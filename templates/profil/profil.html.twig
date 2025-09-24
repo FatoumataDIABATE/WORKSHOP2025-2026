@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résilink - Mon profil{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+{% endblock %}
+
+{% block body %}
+<main class="profile">
+  <section class="page-head container">
+    <h1>Mon Profil</h1>
+    <p class="lead">Gérez vos informations personnelles et préférences</p>
+  </section>
+
+  <section class="container grid">
+    <aside class="card side">
+      <div class="avatar placeholder" aria-hidden="true">JD</div>
+
+      <div class="identity">
+        <strong class="pseudo">JohnDoe_2024</strong>
+      </div>
+
+      <ul class="meta">
+        <li>
+          <span class="i i-calendar" aria-hidden="true"></span>
+          <div>
+            <span class="muted">Membre depuis</span>
+            <strong>15 janvier 2024</strong>
+          </div>
+        </li>
+        <li>
+          <span class="i i-time" aria-hidden="true"></span>
+          <div>
+            <span class="muted">Dernière activité</span>
+            <strong>Il y a 2 minutes</strong>
+          </div>
+        </li>
+      </ul>
+
+      <div class="stats">
+        <div class="stat">
+          <span class="value">1247</span>
+          <span class="label">Messages</span>
+        </div>
+        <div class="stat">
+          <span class="value">8</span>
+          <span class="label">Conversations</span>
+        </div>
+      </div>
+
+      <div class="badge"><span class="dot"></span>Compte Sécurisé</div>
+    </aside>
+
+    <div class="main">
+      <section class="card">
+        <h2 class="section-title">
+          <span class="icon icon-shield" aria-hidden="true"></span>
+          Sécurité
+        </h2>
+        <p class="muted">Paramètres de sécurité et confidentialité</p>
+
+        <nav class="list-actions">
+          <a class="list-item" href="#">Changer le mot de passe</a>
+          <a class="list-item" href="#">Gérer les sessions actives</a>
+          <a class="list-item" href="#">Télécharger mes données</a>
+        </nav>
+
+        <div class="danger-zone">
+          <button type="button" class="btn btn--block btn--muted">Supprimer le compte</button>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
+{% endblock %}
