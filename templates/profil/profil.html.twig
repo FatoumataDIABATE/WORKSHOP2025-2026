@@ -1,84 +1,108 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Résilink - Mon profil{% endblock %}
+{% block title %}Résilink - Mon profil
+{% endblock %}
 
 {% block styles %}
-  <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 {% endblock %}
 
 {% block body %}
-<main class="profile">
-  <section class="page-head container">
-    <h1>Mon Profil</h1>
-    <p class="lead">Gérez vos informations personnelles et préférences</p>
-  </section>
+	<main class="profile">
+		<section class="page-head container">
+			<h1>Mon Profil</h1>
+			<p class="lead">Gérez vos informations personnelles et préférences</p>
+		</section>
 
-  <section class="container grid">
-    <aside class="card side">
-        <div class="avatar">
-            <!-- Icône profil SVG -->
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 fill="currentColor"
-                 viewBox="0 0 24 24"
-                 class="w-12 h-12 text-gray-500">
-                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-            </svg>
-        </div>
+		<section class="container grid">
+			<aside class="card side">
+				<div class="avatar placeholder" aria-hidden="true">{{ app.user.pseudo|first|upper }}</div>
 
-      <div class="identity">
-        <strong class="pseudo">{{ user.pseudo }}</strong>
-      </div>
+				<div class="identity">
+					<strong class="pseudo">{{ app.user.pseudo }}</strong>
+				</div>
 
-      <ul class="meta">
-        <li>
-          <span class="i i-calendar" aria-hidden="true"></span>
-          <div>
-            <span class="muted">Membre depuis</span>
-            <strong>15 janvier 2024</strong>
-          </div>
-        </li>
-        <li>
-          <span class="i i-time" aria-hidden="true"></span>
-          <div>
-            <span class="muted">Dernière activité</span>
-            <strong>Il y a 2 minutes</strong>
-          </div>
-        </li>
-      </ul>
+				<ul class="meta">
+					<li>
+						<span class="i i-calendar" aria-hidden="true"></span>
+						<div>
+							<span class="muted">Membre depuis</span>
+							<strong>le
+								{{ app.user.createdAt|date('d/m/Y', 'Europe/Paris') }}</strong>
+						</div>
+					</li>
+					<li>
+						<span class="i i-time" aria-hidden="true"></span>
+						<div>
+							<span class="muted">Dernière activité</span>
+							<strong>
+								{% if app.user.lastLogin %}
+									{% set now  = "now"|date('U') %}
+									{% set last = app.user.lastLogin|date('U') %}
+									{% set diff = now - last %}
 
-      <div class="stats">
-        <div class="stat">
-          <span class="value">1247</span>
-          <span class="label">Messages</span>
-        </div>
-        <div class="stat">
-          <span class="value">8</span>
-          <span class="label">Conversations</span>
-        </div>
-      </div>
+									{% if diff < 60 %}
+										il y a
+										{{ diff }}
+										s
+									{% elseif diff < 3600 %}
+										il y a
+										{{ (diff / 60)|round(0, 'floor') }}
+										min
+									{% elseif diff < 86400 %}
+										il y a
+										{{ (diff / 3600)|round(0, 'floor') }}
+										h
+									{% elseif diff < 2592000 %}
+										il y a
+										{{ (diff / 86400)|round(0, 'floor') }}
+										j
+									{% else %}
+										le
+										{{ app.user.lastLogin|date('d/m/Y', 'Europe/Paris') }}
+									{% endif %}
+								{% else %}
+									-
+								{% endif %}
+							</strong>
+						</div>
+					</li>
+				</ul>
 
-      <div class="badge"><span class="dot"></span>Compte Sécurisé</div>
-    </aside>
+				<div class="stats">
+					<div class="stat">
+						<span class="value">1247</span>
+						<span class="label">Messages</span>
+					</div>
+					<div class="stat">
+						<span class="value">8</span>
+						<span class="label">Conversations</span>
+					</div>
+				</div>
 
-    <div class="main">
-      <section class="card">
-        <h2 class="section-title">
-          <span class="icon icon-shield" aria-hidden="true"></span>
-          Sécurité
-        </h2>
-        <p class="muted">Paramètres de sécurité et confidentialité</p>
+				<div class="badge">
+					<span class="dot"></span>Compte Sécurisé</div>
+			</aside>
 
-        <nav class="list-actions">
-          <a class="list-item" href="#">Changer le mot de passe</a>
-          <a class="list-item" href="#">Gérer les sessions actives</a>
-          <a class="list-item" href="#">Télécharger mes données</a>
-        </nav>
+			<div class="main">
+				<section class="card">
+					<h2 class="section-title">
+						<span class="icon icon-shield" aria-hidden="true"></span>
+						Sécurité
+					</h2>
+					<p class="muted">Paramètres de sécurité et confidentialité</p>
 
-        <div class="danger-zone">
-          <button type="button" class="btn btn--block btn--muted">Supprimer le compte</button>
-        </div>
-      </section>
-    </div>
-  </section>
-</main>
+					<nav class="list-actions">
+						<a class="list-item" href="#">Changer le mot de passe</a>
+						<a class="list-item" href="#">Gérer les sessions actives</a>
+						<a class="list-item" href="#">Télécharger mes données</a>
+					</nav>
+
+					<div class="danger-zone">
+						<button type="button" class="btn btn--block btn--muted">Supprimer le compte</button>
+					</div>
+				</section>
+			</div>
+		</section>
+	</main>
 {% endblock %}

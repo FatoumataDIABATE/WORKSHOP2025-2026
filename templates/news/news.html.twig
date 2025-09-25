@@ -1,0 +1,208 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résilink - Informations{% endblock %}
+
+{% block styles %}
+<style>
+  .news{
+    --bg-1: #020617;
+    --bg-2: #001f3f;
+    --card: rgba(255,255,255,0.04);
+    --glass: rgba(255,255,255,0.03);
+    --accent: #2bd4ff;
+    --muted: rgba(255,255,255,0.55);
+    --glass-border: rgba(255,255,255,0.06);
+    --radius: 14px;
+    --max-width: 980px;
+    --gap: 18px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    min-height: calc(100vh - var(--nav-height, 0px));
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg,var(--bg-1) 0%, var(--bg-2) 60%);
+    color: #e9f6ff;
+  }
+  .news *{ box-sizing: border-box; }
+
+  .news .shell{
+    width:100%;
+    max-width:var(--max-width);
+    backdrop-filter: blur(6px) saturate(110%);
+    border-radius:18px;
+    border:1px solid var(--glass-border);
+    padding:22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    box-shadow: 0 10px 30px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+
+  .news header.journal-head{
+    display:flex; align-items:center; gap:14px; margin-bottom:18px;
+  }
+  .news .logo{
+    width:64px;height:64px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--accent), #7b9cff 80%);
+    color:#001219;font-weight:700;font-size:18px;box-shadow:0 6px 18px rgba(43,212,255,0.08);
+  }
+  .news h1{margin:0;font-size:20px;letter-spacing:0.6px}
+  .news p.lead{margin:0;color:var(--muted);font-size:13px}
+
+  .news .controls{ margin-left:auto;display:flex;gap:8px;align-items:center; }
+  .news .btn{
+    background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:var(--muted);font-size:13px;cursor:pointer;
+  }
+  .news .btn.primary{background:linear-gradient(90deg,var(--accent), #7b9cff);color:#001022;border:none}
+
+  .news .grid{ display:grid;grid-template-columns:1fr 340px;gap:var(--gap); }
+
+  .news .feed{
+    background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.01));
+    padding:16px;border-radius:12px;border:1px solid var(--glass-border);
+    min-height:360px;
+  }
+
+  .news .item{
+    display:flex;gap:12px;padding:12px;border-radius:10px;align-items:flex-start;border:1px solid rgba(255,255,255,0.02);margin-bottom:12px;transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .news .item:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(2,6,23,0.45)}
+  .news .item .meta{ width:72px;flex-shrink:0;text-align:left;font-size:12px;color:var(--muted) }
+  .news .item .meta .date{font-weight:600;color:#dff6ff}
+  .news .item .body{flex:1}
+  .news .item .title{margin:0;font-size:15px}
+  .news .item .excerpt{margin:6px 0 0;color:var(--muted);font-size:14px}
+  .news .tags{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+  .news .tag{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+
+  .news .aside{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;border:1px solid var(--glass-border);min-height:360px;
+  }
+  .news .aside h3{margin:0 0 12px 0;font-size:14px}
+  .news .headline{font-weight:700;color:var(--accent);font-size:13px;margin-bottom:8px}
+
+  .news .small{font-size:12px;color:var(--muted);margin-top:12px}
+
+  @media (max-width:880px){
+    .news .grid{grid-template-columns:1fr}
+    .news .controls{margin-top:10px}
+  }
+
+  @media print{
+    .news{background:white;color:black}
+    .news .shell{box-shadow:none;border:none;background:white}
+  }
+
+  .news .btn:focus, .news .item:focus{outline:3px solid rgba(43,212,255,0.14);outline-offset:2px}
+</style>
+{% endblock %}
+
+{% block body %}
+<main class="news">
+  <div class="shell" role="region" aria-label="News — D.I.P.">
+    <header class="journal-head">
+      <div class="logo" aria-hidden="true">N</div>
+      <div>
+        <h1>News</h1>
+        <p class="lead">Les actualités locales, infos pratiques et annonces pour tous les habitants. Accessible et compréhensible par tous.</p>
+      </div>
+
+      <div class="controls" aria-hidden="false">
+        <button class="btn" id="refreshBtn" title="Rafraîchir">↻ Rafraîchir</button>
+        <button class="btn primary" id="composeBtn">Nouvelle annonce</button>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="feed" aria-live="polite" id="feed">
+        <noscript>
+          <article class="item" tabindex="0">
+            <div class="meta"><div class="date">24/09/2025</div><div class="where">Centre-ville</div></div>
+            <div class="body">
+              <h2 class="title">Marché hebdomadaire</h2>
+              <div class="excerpt">Le marché de la ville aura lieu samedi matin, place de l’Hôtel de Ville. Venez découvrir les produits locaux.</div>
+              <div class="tags"><span class="tag">Vie locale</span><span class="tag">Marché</span></div>
+            </div>
+          </article>
+        </noscript>
+      </section>
+
+      <aside class="aside" aria-label="Infos rapides">
+        <h3>À la une</h3>
+        <div class="headline" id="headline">Événements de la semaine — restez informés !</div>
+
+        <h3 style="margin-top:14px">Météo</h3>
+        <div id="meteo">☀️ Ensoleillé, 23°C l'après-midi</div>
+
+        <h3 style="margin-top:14px">Infos utiles</h3>
+        <ul>
+          <li>Horaires bus et transports</li>
+          <li>Agenda culturel</li>
+          <li>Services municipaux</li>
+        </ul>
+
+        <h3 style="margin-top:14px">Petites annonces</h3>
+        <ul id="annonces">
+          <li>Recherche baby-sitter pour soirées week-end.</li>
+          <li>Vélo d'occasion à vendre, bon état.</li>
+          <li>Atelier cuisine gratuit samedi après-midi.</li>
+        </ul>
+
+        <div class="small">Dernière mise à jour : <span id="updated">—</span></div>
+      </aside>
+    </main>
+  </div>
+</main>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+(function(){
+  const root = document.querySelector('.news');
+  if (!root) return;
+
+  const sample = [
+    {date:'2025-09-23', where:'Centre-ville', title:'Nouveau café ouvert', excerpt:'Un nouveau café ouvre ses portes rue Principale, avec terrasse et spécialités locales.', tags:['Vie locale','Commerce']},
+    {date:'2025-09-22', where:'Parc municipal', title:'Concert gratuit', excerpt:'Concert gratuit de musique jazz vendredi soir, ouvert à tous.', tags:['Culture','Musique']},
+    {date:'2025-09-21', where:'Gymnase', title:'Tournoi de basket', excerpt:'Tournoi interquartiers de basket ce week-end, inscriptions encore ouvertes.', tags:['Sport','Communauté']}
+  ];
+
+  const feed = root.querySelector('#feed');
+  const updated = root.querySelector('#updated');
+  const headline = root.querySelector('#headline');
+  const meteo = root.querySelector('#meteo');
+
+  function render(){
+    if (!feed) return;
+    feed.innerHTML = '';
+    sample.forEach(s => {
+      const art = document.createElement('article');
+      art.className = 'item';
+      art.tabIndex = 0;
+      art.innerHTML = `
+        <div class="meta"><div class="date">${formatDate(s.date)}</div><div class="where">${escapeHtml(s.where)}</div></div>
+        <div class="body">
+          <h2 class="title">${escapeHtml(s.title)}</h2>
+          <div class="excerpt">${escapeHtml(s.excerpt)}</div>
+          <div class="tags">${s.tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+        </div>`;
+      feed.appendChild(art);
+    });
+    if (updated) updated.textContent = new Date().toLocaleString();
+    if (headline) headline.textContent = sample[0]?.title || 'Aucune actualité';
+    if (meteo) meteo.textContent = '☀️ Ensoleillé, 23°C l\'après-midi';
+  }
+
+  function formatDate(d){
+    try{ const dt = new Date(d); return dt.toLocaleDateString(); } catch(e){ return d; }
+  }
+  function escapeHtml(t){
+    return String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+
+  root.querySelector('#refreshBtn')?.addEventListener('click', render);
+  root.querySelector('#composeBtn')?.addEventListener('click', ()=> alert('Mode création — ajoutez votre annonce locale ici.'));
+
+  render();
+})();
+</script>
+{% endblock %}

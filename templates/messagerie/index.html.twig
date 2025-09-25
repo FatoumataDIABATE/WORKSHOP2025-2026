@@ -1,84 +1,108 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Résilink - Messagerie{% endblock %}
+{% block title %}Résilink - Messagerie
+{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ asset('css/messagerie.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/messagerie.css') }}">
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('js/messagerie.js') }}" defer></script>
+	<script src="{{ asset('js/messagerie.js') }}" defer></script>
 {% endblock %}
 
-
 {% block body %}
-    <main class="messaging h-screen overflow-hidden">
-        <section class="layout h-full">
-            <!-- Sidebar -->
-            <aside class="sidebar overflow-y-auto">
-                <a href="" class="add-contact">
-                    + Ajouter un contact
-                </a>
+	<main class="messaging">
+		<section class="layout" data-user-id="{{ app.user ? app.user.id : '' }}">
 
-                <div class="search">
-                    <span class="glyph i-search" aria-hidden="true"></span>
-                    <input type="text" placeholder="Rechercher un contact…">
-                </div>
-                <ul class="contacts">
-                    {% for u in users %}
-                        <li class="contact {% if chatUser and chatUser.id == u.id %}is-active{% endif %}">
-                            <a href="{{ path('app_messagerie', {'id': u.id}) }}" class="contact-link">
-                                <span class="avatar">{{ u.pseudo|first|upper }}</span>
-                                <div class="meta">
-                                    <div class="name">{{ u.pseudo }}</div>
-                                </div>
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </aside>
+			<aside class="sidebar">
+				<a href="" class="add-contact">+ Ajouter un contact</a>
 
-            <!-- Zone de discussion -->
-            <section class="chat flex flex-col h-full">
-                {% if chatUser %}
-                    <h2 class="p-4">Discussion avec {{ chatUser.pseudo }}</h2>
-                    <div class="thread flex flex-col flex-1">
-                        <!-- Messages avec scroll -->
-                        <div class="messages flex-1 overflow-y-auto">
-                            {% for message in messages %}
-                                <div class="message {% if message.sender.id == app.user.id %}from-me{% else %}from-them{% endif %}">
-                                    <div class="bubble">
-                                        {{ message.content }}
-                                    </div>
-                                    <div class="time">
-                                        {{ message.createdAt|date('d/m/Y H:i') }}
-                                    </div>
-                                </div>
-                            {% else %}
-                                <p class="muted text-center">Aucun message pour l’instant.</p>
-                            {% endfor %}
-                        </div>
-                    </div>
+				<div class="search">
+					<span class="glyph i-search" aria-hidden="true"></span>
+					<input type="text" placeholder="Rechercher un contact…">
+				</div>
 
-                    <!-- Formulaire fixe en bas -->
-                    {% if form %}
-                        <div class="composer">
-                            <div class="tools">
-                                <button class="icon-btn" aria-label="Prendre une photo"><span class="glyph i-camera"></span></button>
-                                <button class="icon-btn" aria-label="Insérer une image"><span class="glyph i-image"></span></button>
-                                <button class="icon-btn" aria-label="Joindre un fichier"><span class="glyph i-clip"></span></button>
-                            </div>
-                            {{ form_start(form, {'attr': {'class': 'flex w-full gap-2'}}) }}
-                            {{ form_row(form.content, {'attr': {'class': 'composer-input', 'placeholder': 'Écrivez un message…'}}) }}
-                            <button type="submit" class="send" aria-label ="Envoyer"><span class="glyph i-send"></span></button>
-                            {{ form_end(form) }}
-                        </div>
-                    {% endif %}
-                {% else %}
-                    <div class="empty">
-                        <h3>Sélectionnez un contact pour commencer</h3>
-                    </div>
-                {% endif %}
-            </section>
-        </section>
-    </main>
+				<ul class="contacts">
+					{% for user in users %}
+						{% if user.id != app.user.id %}
+							<li class="contact {{ chatUser is defined and chatUser and chatUser.id == user.id ? 'is-active' : '' }}">
+								<a href="{{ path('app_messagerie', {'id': user.id}) }}" class="contact-link">
+									<span class="avatar">{{ user.pseudo|first|upper }}</span>
+									<div class="meta">
+										<div class="name">
+											{{ user.pseudo }}
+											<span class="dot online" aria-hidden="true"></span>
+										</div>
+										<div class="status">En ligne</div>
+									</div>
+								</a>
+							</li>
+						{% endif %}
+					{% else %}
+						<li class="contact">
+							<span class="avatar">?</span>
+							<div class="meta">
+								<div class="name">Aucun contact</div>
+								<div class="status">—</div>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+			</aside>
+
+
+			<section class="chat {{ chatUser is defined and chatUser ? 'has-thread' : '' }}" {% if chatUser is defined and chatUser %} data-chat-user-id="{{ chatUser.id }}" {% endif %}>
+
+				<div class="empty">
+					<span class="circle i-shield" aria-hidden="true"></span>
+					<h3>Sélectionnez un contact</h3>
+					<p class="muted">Choisissez un contact pour commencer une conversation sécurisée</p>
+				</div>
+
+				{% if chatUser is defined and chatUser %}
+					<div class="thread">
+						<div class="messages">
+							{% for message in messages %}
+								<div class="message {{ message.sender.id == app.user.id ? 'from-me' : 'from-them' }}" data-id="{{ message.id }}">
+									<div class="bubble">{{ message.content }}</div>
+									<div class="time">{{ message.createdAt|date('d/m/Y H:i') }}</div>
+								</div>
+							{% else %}
+								<div class="message from-them" data-role="empty-placeholder">
+									<div class="bubble">Aucun message pour l’instant.</div>
+								</div>
+							{% endfor %}
+						</div>
+
+						<div class="composer">
+							<div class="tools">
+								<button class="icon-btn" aria-label="Prendre une photo">
+									<span class="glyph i-camera"></span>
+								</button>
+								<button class="icon-btn" aria-label="Insérer une image">
+									<span class="glyph i-image"></span>
+								</button>
+								<button class="icon-btn" aria-label="Joindre un fichier">
+									<span class="glyph i-clip"></span>
+								</button>
+							</div>
+
+							{{ form_start(form, {
+                                attr: { id: 'send-form', class: 'send-form', autocomplete: 'off' },
+                                action: path('app_messagerie_ajax_send', {'id': chatUser.id})
+                            }) }}
+							{{ form_widget(form.content, { attr: { class: 'input', placeholder: 'Tapez votre message…' } }) }}
+							{{ form_end(form) }}
+
+							<button type="submit" class="send" aria-label="Envoyer" form="send-form">
+								<span class="glyph i-send"></span>
+							</button>
+						</div>
+					</div>
+				{% endif %}
+			</section>
+
+
+		</section>
+	</main>
 {% endblock %}

@@ -20,7 +20,7 @@
 
     <section class="card" aria-labelledby="auth-title">
 
-        {# Onglets #}
+        
         <nav class="tabs" role="tablist" aria-label="Choisir une action">
             <button class="tab {{ activeTab is not defined or activeTab == 'login' ? 'is-active' : '' }}"
                     role="tab" id="tab-login"
@@ -45,13 +45,13 @@
             {{ activeTab is defined and activeTab == 'signup' ? 'Créer votre identité sécurisée' : 'Se connecter' }}
         </h2>
 
-        {# --- Formulaire Connexion --- #}
+       
         <section id="panel-login" role="tabpanel" aria-labelledby="tab-login" {{ activeTab is defined and activeTab == 'signup' ? 'hidden' : '' }}>
-            {# Affichage erreur de connexion #}
-            {% if error is defined %}
-                <div class="alert alert-danger">
-                    Identifiant ou mot de passe incorrect.
-                </div>
+           
+            {% if error is defined and error %}
+            <div class="alert alert-danger">
+                Identifiant ou mot de passe incorrect.
+            </div>
             {% endif %}
 
             {% for message in app.flashes('success') %}
@@ -94,7 +94,7 @@
             </form>
         </section>
 
-        {# --- Formulaire Inscription --- #}
+        
         <section id="panel-signup" role="tabpanel" aria-labelledby="tab-signup" {{ activeTab is not defined or activeTab == 'login' ? 'hidden' : '' }}>
             {% if registerError is defined %}
                 <div class="alert alert-danger">{{ registerError }}</div>
