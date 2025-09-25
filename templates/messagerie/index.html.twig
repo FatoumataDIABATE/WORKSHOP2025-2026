@@ -1,18 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Messagerie{% endblock %}
+{% block title %}Résilink - Messagerie{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('css/messagerie.css') }}">
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/messagerie.js') }}" defer></script>
+{% endblock %}
+
 
 {% block body %}
-    <h1>Liste des utilisateurs</h1>
-
-    <ul>
-        {% for user in users %}
-            <li>
-                <a href="{{ path('app_messagerie_chat', {'id': user.id}) }}">
-                    {{ user.pseudo }}
+    <main class="messaging h-screen overflow-hidden">
+        <section class="layout h-full">
+            <!-- Sidebar -->
+            <aside class="sidebar overflow-y-auto">
+                <a href="" class="add-contact">
+                    + Ajouter un contact
                 </a>
-            </li>
-        {% endfor %}
-    </ul>
 
+                <div class="search">
+                    <span class="glyph i-search" aria-hidden="true"></span>
+                    <input type="text" placeholder="Rechercher un contact…">
+                </div>
+                <ul class="contacts">
+                    {% for u in users %}
+                        <li class="contact {% if chatUser and chatUser.id == u.id %}is-active{% endif %}">
+                            <a href="{{ path('app_messagerie', {'id': u.id}) }}" class="contact-link">
+                                <span class="avatar">{{ u.pseudo|first|upper }}</span>
+                                <div class="meta">
+                                    <div class="name">{{ u.pseudo }}</div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </aside>
+
+            <!-- Zone de discussion -->
+            <section class="chat flex flex-col h-full">
+                {% if chatUser %}
+                    <h2 class="p-4">Discussion avec {{ chatUser.pseudo }}</h2>
+                    <div class="thread flex flex-col flex-1">
+                        <!-- Messages avec scroll -->
+                        <div class="messages flex-1 overflow-y-auto">
+                            {% for message in messages %}
+                                <div class="message {% if message.sender.id == app.user.id %}from-me{% else %}from-them{% endif %}">
+                                    <div class="bubble">
+                                        {{ message.content }}
+                                    </div>
+                                    <div class="time">
+                                        {{ message.createdAt|date('d/m/Y H:i') }}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <p class="muted text-center">Aucun message pour l’instant.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Formulaire fixe en bas -->
+                    {% if form %}
+                        <div class="composer">
+                            <div class="tools">
+                                <button class="icon-btn" aria-label="Prendre une photo"><span class="glyph i-camera"></span></button>
+                                <button class="icon-btn" aria-label="Insérer une image"><span class="glyph i-image"></span></button>
+                                <button class="icon-btn" aria-label="Joindre un fichier"><span class="glyph i-clip"></span></button>
+                            </div>
+                            {{ form_start(form, {'attr': {'class': 'flex w-full gap-2'}}) }}
+                            {{ form_row(form.content, {'attr': {'class': 'composer-input', 'placeholder': 'Écrivez un message…'}}) }}
+                            <button type="submit" class="send" aria-label ="Envoyer"><span class="glyph i-send"></span></button>
+                            {{ form_end(form) }}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="empty">
+                        <h3>Sélectionnez un contact pour commencer</h3>
+                    </div>
+                {% endif %}
+            </section>
+        </section>
+    </main>
 {% endblock %}

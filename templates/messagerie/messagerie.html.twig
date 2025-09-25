@@ -3,90 +3,83 @@
 {% block title %}Résilink - Messagerie{% endblock %}
 
 {% block styles %}
-  <link rel="stylesheet" href="{{ asset('css/messagerie.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/messagerie.css') }}">
 {% endblock %}
+
 {% block javascripts %}
-  <script src="{{ asset('js/messagerie.js') }}" defer></script>
+    <script src="{{ asset('js/messagerie.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
-<main class="messaging">
-  <section class="layout">
-    <aside class="sidebar">
-      <a href="" class="add-contact">    
-     + Ajouter un contact
-  </a>
+    <main class="messaging">
+        <section class="layout">
+            <!-- Sidebar avec liste des utilisateurs -->
+            <aside class="sidebar">
+                <a href="" class="add-contact">+ Ajouter un contact</a>
 
-  <div class="search">
-    <span class="glyph i-search" aria-hidden="true"></span>
-    <input type="text" placeholder="Rechercher un contact…">
-  </div>
+                <div class="search">
+                    <span class="glyph i-search" aria-hidden="true"></span>
+                    <input type="text" placeholder="Rechercher un contact…">
+                </div>
 
-      <ul class="contacts">
-        <li class="contact is-active">
-          <span class="avatar">A</span>
-          <div class="meta">
-            <div class="name">Alice <span class="dot online" aria-hidden="true"></span></div>
-            <div class="status">En ligne</div>
-          </div>
-        </li>
+                <ul class="contacts">
+                    {% for user in users %}
+                        {% if user.id != app.user.id %}
+                            <li class="contact {{ chatUser is defined and chatUser.id == user.id ? 'is-active' : '' }}">
+                                <a href="{{ path('app_messagerie', {'id': user.id}) }}">
+                                    <span class="avatar">{{ user.pseudo[0]|upper }}</span>
+                                    <div class="meta">
+                                        <div class="name">{{ user.pseudo }}
+                                            <span class="dot online" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="status">En ligne</div>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="contact"><p>Aucun utilisateur trouvé.</p></li>
+                    {% endfor %}
+                </ul>
+            </aside>
 
-        <li class="contact">
-          <span class="avatar">B</span>
-          <div class="meta">
-            <div class="name">Bob <span class="dot idle" aria-hidden="true"></span></div>
-            <div class="status">il y a 2h</div>
-          </div>
-        </li>
+            <!-- Section de discussion -->
+            <section class="chat">
+                {% if chatUser is not defined %}
+                    <div class="empty">
+                        <span class="circle i-shield" aria-hidden="true"></span>
+                        <h3>Sélectionnez un contact</h3>
+                        <p class="muted">Choisissez un contact pour commencer une conversation sécurisée</p>
+                    </div>
+                {% else %}
+                    <div class="thread">
+                        <div class="messages">
+                            {% for message in messages %}
+                                <div class="message {{ message.sender.id == app.user.id ? 'from-me' : 'from-them' }}">
+                                    <div class="bubble">{{ message.content }}</div>
+                                    <div class="time">{{ message.createdAt|date('H:i') }}
+                                        {% if message.sender.id == app.user.id %}<span class="seen">Lu</span>{% endif %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <p class="muted">Aucun message pour l’instant.</p>
+                            {% endfor %}
+                        </div>
 
-        <li class="contact">
-          <span class="avatar">C</span>
-          <div class="meta">
-            <div class="name">Charlie <span class="dot online" aria-hidden="true"></span></div>
-            <div class="status">En ligne</div>
-          </div>
-        </li>
-      </ul>
-    </aside>
+                        <!-- Formulaire d'envoi de message -->
+                        <div class="composer">
+                            {{ form_start(form, {'action': path('app_messagerie_ajax_send', {'id': chatUser.id})}) }}
+                            {{ form_widget(form.content, {'attr': {'class': 'input', 'placeholder': 'Tapez votre message…'}}) }}
+                            <button class="send" type="submit" aria-label="Envoyer">
+                                <span class="glyph i-send"></span>
+                            </button>
+                            {{ form_end(form) }}
+                        </div>
 
-    <section class="chat">
-      <div class="empty">
-        <span class="circle i-shield" aria-hidden="true"></span>
-        <h3>Sélectionnez un contact</h3>
-        <p class="muted">Choisissez un contact pour commencer une conversation sécurisée</p>
-      </div>
+                    </div>
+                {% endif %}
+            </section>
+        </section>
+    </main>
 
-      <div class="thread">
-        <div class="messages">
-          <div class="message from-them">
-            <div class="bubble">Salut ! Comment ça va ?</div>
-            <div class="time">15:36</div>
-          </div>
-
-          <div class="message from-them">
-            <div class="bubble">Parfait ! Tu es libre ce soir ?</div>
-            <div class="time">16:06</div>
-          </div>
-
-          <div class="message from-me">
-            <div class="bubble">Ça va bien merci ! Et toi ?</div>
-            <div class="time">15:46 <span class="seen">Lu</span></div>
-          </div>
-        </div>
-
-        <div class="composer">
-          <div class="tools">
-            <button class="icon-btn" aria-label="Prendre une photo"><span class="glyph i-camera"></span></button>
-            <button class="icon-btn" aria-label="Insérer une image"><span class="glyph i-image"></span></button>
-            <button class="icon-btn" aria-label="Joindre un fichier"><span class="glyph i-clip"></span></button>
-          </div>
-
-          <input class="input" type="text" placeholder="Tapez votre message…">
-
-          <button class="send" aria-label="Envoyer"><span class="glyph i-send"></span></button>
-        </div>
-      </div>
-    </section>
-  </section>
-</main>
 {% endblock %}
