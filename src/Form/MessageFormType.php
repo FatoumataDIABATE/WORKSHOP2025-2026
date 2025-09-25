@@ -16,6 +16,7 @@ class MessageFormType extends AbstractType
             ->add('content', TextareaType::class, [
                 'label' => 'Message',
                 'attr' => ['rows' => 3],
+                'translation_domain' => false,
             ]);
     }
 

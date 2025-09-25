@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MessagerieController extends AbstractController
 {
@@ -92,34 +93,78 @@ class MessagerieController extends AbstractController
     #[Route('/messagerie/ajax/send/{id}', name: 'app_messagerie_ajax_send', methods: ['POST'])]
     public function ajaxSend(User $user, Request $request, EntityManagerInterface $em): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $content = $data['content'] ?? null;
-
-        if (!$content) {
-            return $this->json(['success' => false, 'error' => 'Message vide']);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    
+        $json = json_decode($request->getContent(), true);
+        $content =
+            ($json['content'] ?? null)                                    
+            ?? ($request->request->all('message')['content'] ?? null)      
+            ?? $request->request->get('content');                          
+    
+        if (!$content || trim($content) === '') {
+            return $this->json(['success' => false, 'error' => 'Message vide'], 400);
         }
-
+    
+        /** @var User $currentUser */
         $currentUser = $this->getUser();
-
-        $message = new Message();
-        $message->setSender($currentUser);
-        $message->setReceiver($user);
-        $message->setContent($content);
-        $message->setCreatedAt(new \DateTimeImmutable());
-
+    
+        $message = (new Message())
+            ->setSender($currentUser)
+            ->setReceiver($user)
+            ->setContent($content)
+            ->setCreatedAt(new \DateTimeImmutable());
+    
         $em->persist($message);
         $em->flush();
-
+    
         return $this->json([
             'success' => true,
             'message' => [
-                'id' => $message->getId(),
-                'content' => $message->getContent(),
-                'createdAt' => $message->getCreatedAt()->format('H:i'),
-                'senderId' => $message->getSender()->getId(),
+                'id'         => $message->getId(),
+                'content'    => $message->getContent(),
+                'createdAt'  => $message->getCreatedAt()->format('H:i'),
+                'senderId'   => $message->getSender()->getId(),
                 'receiverId' => $message->getReceiver()->getId(),
-            ]
+            ],
         ]);
     }
+    
+    
+
+
+
+
+    #[Route('/messagerie/{id}/sync', name: 'app_messagerie_sync', methods: ['GET'])]
+    public function sync(User $user, Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $currentUser = $this->getUser();
+        $afterId = (int) $request->query->get('afterId', 0);
+
+        $qb = $em->getRepository(Message::class)->createQueryBuilder('m')
+            ->where('(m.sender = :me AND m.receiver = :other) OR (m.sender = :other AND m.receiver = :me)')
+            ->setParameter('me', $currentUser)
+            ->setParameter('other', $user)
+            ->orderBy('m.id', 'ASC');
+
+        if ($afterId > 0) {
+            $qb->andWhere('m.id > :afterId')->setParameter('afterId', $afterId);
+        }
+
+        $msgs = $qb->getQuery()->getResult();
+
+        $payload = array_map(function (Message $m) {
+            return [
+                'id'        => $m->getId(),
+                'content'   => $m->getContent(),
+                'createdAt' => $m->getCreatedAt()->format('H:i'),
+                'senderId'  => $m->getSender()->getId(),
+                'receiverId'=> $m->getReceiver()->getId(),
+            ];
+        }, $msgs);
+
+        return $this->json(['messages' => $payload]);
+    }
+
 
 }
